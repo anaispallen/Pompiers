@@ -76,7 +76,7 @@ if page == pages[0] :
     st.write("### La Brigade des Pompiers de Londres")
     st.write("L’objectif de ce projet est d’analyser et de prédire les temps de réponse et de mobilisation de la Brigade des Pompiers de Londres.")
     st.write("Ce projet est réalisé dans le cadre de notre formation avec DataScientest.")
-    st.image("https://github.com/anaispallen/Pompiers/blob/main/image1.jpg")
+    st.image("image1.jpg")
     st.write("### Introduction")
     st.write("Pour mener à bien ce projet, deux datasets nous ont été fournis. Les incidents et les mobilisations.")
     st.write("Le premier jeu de données fourni contient les détails de chaque incident traité. Des informations sont fournies sur la date et le lieu de l'incident ainsi que sur le type d'incident traité. Le second jeu de données contient les détails de chaque camion de pompiers envoyé sur les lieux d'un incident. Des informations sont fournies sur l'appareil mobilisé, son lieu de déploiement et les heures d'arrivée sur les lieux de l'incident.")
