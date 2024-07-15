@@ -181,7 +181,6 @@ elif page ==pages[2]:
 
     #Joblib
     regressor_linear = joblib.load("modele_regressor_linear")
-    regressor_tree = joblib.load("modele_regressor_tree")
     regressor_gradient = joblib.load("modele_regressor_gradient")
     metrique = joblib.load("comparaison_metrique")
     rf2 = joblib.load("hyperparametre_Forest")
@@ -190,18 +189,15 @@ elif page ==pages[2]:
 
     #Prédictions
     y_pred_linear = regressor_linear.predict(X_test)
-    y_pred_tree = regressor_tree.predict(X_test)
     y_pred_gradient = regressor_gradient.predict(X_test)
     y_pred_test = rf2.predict(X_test)
 
     #Choix du modèle
-    modele_choisi = st.selectbox(label = "Modèle", options = ["Linear Regression", "Decision Tree", "Random Forest", "Gradient Boosting"])
+    modele_choisi = st.selectbox(label = "Modèle", options = ["Linear Regression", "Random Forest", "Gradient Boosting"])
 
     def train_model(modele_choisi):
         if modele_choisi == "Linear Regression":
             y_pred = y_pred_linear
-        elif modele_choisi == "Decision Tree":
-            y_pred = y_pred_tree
         elif modele_choisi == "Random Forest":
             y_pred = y_pred_test
         elif modele_choisi == "Gradient Boosting":
@@ -215,14 +211,6 @@ elif page ==pages[2]:
             feat_importances_linear.sort_values(by="importance", ascending=False, inplace=True)
             ax = feat_importances_linear.plot(kind="bar", figsize=(8, 6))
             plt.title("Feature Importances - Linear Regression")
-            plt.xlabel("Features")
-            plt.ylabel("Importance")
-            return ax.get_figure()
-        elif modele_choisi == "Decision Tree":
-            feat_importances_tree = pd.DataFrame(regressor_tree.feature_importances_, index=feats.columns, columns=["importance"])
-            feat_importances_tree.sort_values(by="importance", ascending=False, inplace=True)
-            ax = feat_importances_tree.plot(kind="bar", figsize=(8, 6))
-            plt.title("Feature Importances - Decision Tree")
             plt.xlabel("Features")
             plt.ylabel("Importance")
             return ax.get_figure()
