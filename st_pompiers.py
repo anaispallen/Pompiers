@@ -185,13 +185,16 @@ elif page ==pages[2]:
     regressor_forest = joblib.load("modele_regressor_forest")
     regressor_gradient = joblib.load("modele_regressor_gradient")
     metrique = joblib.load("comparaison_metrique")
-    hyperparametre = joblib.load("hyperparametre_Forest")
+    rf2 = joblib.load("hyperparametre_Forest")
+    
+    best_rf = rf2.best_estimator_
 
     #Prédictions
     y_pred_linear = regressor_linear.predict(X_test)
     y_pred_tree = regressor_tree.predict(X_test)
     y_pred_forest = regressor_forest.predict(X_test)
     y_pred_gradient = regressor_gradient.predict(X_test)
+    y_pred_test = rf2.predict(X_test)
 
     #Choix du modèle
     modele_choisi = st.selectbox(label = "Modèle", options = ["Linear Regression", "Decision Tree", "Random Forest", "Gradient Boosting"])
@@ -202,7 +205,7 @@ elif page ==pages[2]:
         elif modele_choisi == "Decision Tree":
             y_pred = y_pred_tree
         elif modele_choisi == "Random Forest":
-            y_pred = y_pred_forest
+            y_pred = y_pred_test
         elif modele_choisi == "Gradient Boosting":
             y_pred = y_pred_gradient
         r2 = r2_score(y_test, y_pred)
@@ -226,9 +229,9 @@ elif page ==pages[2]:
             plt.ylabel("Importance")
             return ax.get_figure()
         elif modele_choisi == "Random Forest":
-            feat_importances_forest = pd.DataFrame(regressor_forest.feature_importances_, index=feats.columns, columns=["importance"])
-            feat_importances_forest.sort_values(by="importance", ascending=False, inplace=True)
-            ax = feat_importances_forest.plot(kind="bar", figsize=(8, 6))
+            feat_importances_rf2 = pd.DataFrame(best_rf.feature_importances_,index=feats.columns,columns=["importance"])
+            feat_importances_rf2.sort_values(by="importance",ascending=False,inplace=True)
+            ax = feat_importances_rf2.plot(kind="bar", figsize=(8, 6))
             plt.title("Feature Importances - Random Forest")
             plt.xlabel("Features")
             plt.ylabel("Importance")
@@ -251,9 +254,7 @@ elif page ==pages[2]:
     st.write("Le modèle le plus performant que nous retenons est le Random Forest, sur lequel nous décidons d'appliquer les hyperparamètres afin de réhausser le score.")
 
     st.write("### Hyperparamètres")
-    st.write("Nous obtenons un score meilleur sur train grâce aux hyperparamètres. Ce qui nous permet de supprimer l'overfitting.")
-    st.write("Score Train = 0.595")
-    st.write("Score Test = 0.523")
+    st.write("Ci-dessous le détail des hyperparamètres utilisés dans le modèle Random Forest")
     code_hyper = '''
     param_grid = {
     'n_estimators': [80],  # Nombre d'arbres dans la forêt
