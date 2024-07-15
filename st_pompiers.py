@@ -182,17 +182,15 @@ elif page ==pages[2]:
     #Joblib
     regressor_linear = joblib.load("modele_regressor_linear")
     regressor_tree = joblib.load("modele_regressor_tree")
-    regressor_forest = joblib.load("modele_regressor_forest")
     regressor_gradient = joblib.load("modele_regressor_gradient")
     metrique = joblib.load("comparaison_metrique")
     rf2 = joblib.load("hyperparametre_Forest")
-    
+
     best_rf = rf2.best_estimator_
 
     #Prédictions
     y_pred_linear = regressor_linear.predict(X_test)
     y_pred_tree = regressor_tree.predict(X_test)
-    y_pred_forest = regressor_forest.predict(X_test)
     y_pred_gradient = regressor_gradient.predict(X_test)
     y_pred_test = rf2.predict(X_test)
 
