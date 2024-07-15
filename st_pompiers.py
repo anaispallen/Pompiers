@@ -185,6 +185,7 @@ elif page ==pages[2]:
     regressor_forest = joblib.load("modele_regressor_forest")
     regressor_gradient = joblib.load("modele_regressor_gradient")
     metrique = joblib.load("comparaison_metrique")
+    hyperparametre = joblib.load("hyperparametre_Forest")
 
     #Prédictions
     y_pred_linear = regressor_linear.predict(X_test)
@@ -250,10 +251,27 @@ elif page ==pages[2]:
     st.write("Le modèle le plus performant que nous retenons est le Random Forest, sur lequel nous décidons d'appliquer les hyperparamètres afin de réhausser le score.")
 
     st.write("### Hyperparamètres")
+    st.write("Nous obtenons un score meilleur sur train grâce aux hyperparamètres. Ce qui nous permet de supprimer l'overfitting.")
+    st.write("Score Train = 0.595")
+    st.write("Score Test = 0.523")
+    code_hyper = '''
+    param_grid = {
+    'n_estimators': [80],  # Nombre d'arbres dans la forêt
+    'max_depth': [20],  # Profondeur maximale de l'arbre
+    'min_samples_split': [20],  # Nombre minimum d'échantillons pour diviser un nœud
+    'min_samples_leaf': [5],  # Nombre minimum d'échantillons par feuille
+    'max_features': ['sqrt'],  # Nombre maximum de caractéristiques à considérer pour une division}'''
+    st.code(code_hyper, language='python')
 
 
 #PAGE CONCLUSION
 elif page == pages[3]:
     st.write("### Conclusion")
-    st.write("Les scores obtenus sont relativement faibles. Nous obtenons seulement 52% de prédictions justes.")
+    st.write("Les scores obtenus sont relativement faibles. Nous obtenons seulement 52% de prédictions justes. De plus, nous avons eu de l'overfitting sur l'ensemble des modèles testés. Seule l'application d'hyperparamètres sur notre meilleur modèle à permis de supprimer l'overfitting.")
     st.image("image3.jpg")
+    st.write("### Pistes d'améliorations")
+    st.write("Pour réhausser le score et optimiser le modèle, nous pouvons jouer sur deux axes : ")
+    st.markdown("- Booster les hyperparamètres")
+    st.write("On pourrait accroitre le nombre d’arbres dans la forêt avec le « n_estimators », mais aussi aller plus en profondeur dans l’arbre « max_depth ». On préconise également d’autres paramètres comme « max_leaf_nodes », « min_impurity_decrease » ou encore le « ccp_alpha ». Mais attention cela necessite une machine très puissante pour faire tourner ce code.")
+    st.markdown("- Ajouter de nouvelles variables")
+    st.write("On pourrait ajouter au modèle d'autres variables comme la densité de population, la typologie des axes routiers et la densité de circulation. Nous pensons que ces variables dont nous ne disposons pas pourrait avoir une influence significative sur le score.")
